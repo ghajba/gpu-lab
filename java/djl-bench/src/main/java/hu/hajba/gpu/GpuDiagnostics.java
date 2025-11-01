@@ -9,11 +9,9 @@ import ai.djl.ndarray.types.Shape;
 
 public class GpuDiagnostics {
 
-    private static final String CACHE_DIR_PROPERTY = "DJL_CACHE_DIR";
-
     static void main(String... args) {
 
-        DllPath.prependDjlCudaToDllSearchPath(CACHE_DIR_PROPERTY);
+        DllPath.prependDjlCudaToDllSearchPath();
 
         Engine.debugEnvironment();
         System.out.println("== DJL GPU Diagnostics ==");

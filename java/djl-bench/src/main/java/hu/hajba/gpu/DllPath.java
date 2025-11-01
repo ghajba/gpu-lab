@@ -10,17 +10,19 @@ import java.nio.file.Paths;
 
 public class DllPath {
 
+    private static final String CACHE_DIR_PROPERTY = "DJL_CACHE_DIR";
+
     interface Kernel32 extends Library {
         Kernel32 INSTANCE = Native.load("Kernel32", Kernel32.class);
 
         boolean SetDllDirectoryW(WString path);
     }
 
-    public static void prependDjlCudaToDllSearchPath(String cacheDirProperty) {
-        String cache = System.getProperty(cacheDirProperty, Paths.get(System.getProperty("user.home"), ".djl.ai").toString());
-        System.out.println("cache: " + cache);
+    public static void prependDjlCudaToDllSearchPath() {
+        String cache = System.getProperty(CACHE_DIR_PROPERTY, Paths.get(System.getProperty("user.home"), ".djl.ai").toString());
+
         Path pytorchRoot = Paths.get(cache, "pytorch");
-        // pick the newest cu124 native folder
+
         Path chosen = null;
         try (var dirs = Files.list(pytorchRoot)) {
             chosen = dirs.filter(Files::isDirectory)
