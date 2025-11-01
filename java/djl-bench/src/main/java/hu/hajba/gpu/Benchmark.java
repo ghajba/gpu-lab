@@ -19,13 +19,13 @@ import java.util.concurrent.Callable;
 )
 public class Benchmark implements Callable<Integer> {
 
-    @Option(names = {"-n", "--size"}, paramLabel = "N", description = "Matrix size NxN.", defaultValue = "2048")
+    @Option(names = {"-n", "--size"}, paramLabel = "N", description = "Matrix size NxN.", defaultValue = "4096")
     int n;
 
-    @Option(names = {"-w", "--warmup"}, paramLabel = "W", description = "Warmup iterations (not timed).", defaultValue = "3")
+    @Option(names = {"-w", "--warmup"}, paramLabel = "W", description = "Warmup iterations (not timed).", defaultValue = "10")
     int warmup;
 
-    @Option(names = {"-i", "--iterations"}, paramLabel = "I", description = "Timed iterations.", defaultValue = "5")
+    @Option(names = {"-i", "--iterations"}, paramLabel = "I", description = "Timed iterations.", defaultValue = "50")
     int iterations;
 
     @Option(names = {"-d", "--device"}, paramLabel = "DEV", description = "Device: auto|cpu|gpu", defaultValue = "auto")
@@ -43,7 +43,9 @@ public class Benchmark implements Callable<Integer> {
     @Option(names = {"--csv"}, paramLabel = "FILE", description = "Append results as CSV to FILE (op,engine,device,n,warm,iters,ms).")
     String csvFile;
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
+        DllPath.prependDjlCudaToDllSearchPath();
+
         int rc = new CommandLine(new Benchmark()).execute(args);
         System.exit(rc);
     }
